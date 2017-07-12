@@ -9,6 +9,8 @@ use Cake\Validation\Validator;
 /**
  * Products Model
  *
+ * @property \App\Model\Table\ShoppingsTable|\Cake\ORM\Association\BelongsToMany $Shoppings
+ *
  * @method \App\Model\Entity\Product get($primaryKey, $options = [])
  * @method \App\Model\Entity\Product newEntity($data = null, array $options = [])
  * @method \App\Model\Entity\Product[] newEntities(array $data, array $options = [])
@@ -37,22 +39,28 @@ class ProductsTable extends Table
         $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp');
-
+        
         $this->addBehavior('Proffer.Proffer', [
-        'photo' => [    // The name of your upload field
+            'photo' => [    // The name of your upload field
             'root' => WWW_ROOT . 'files', // Customise the root upload folder here, or omit to use the default
             'dir' => 'photo_dir',   // The name of the field to store the folder
             'thumbnailSizes' => [ // Declare your thumbnails
-                'square' => [   // Define the prefix of your thumbnail
-                    'w' => 300, // Width
-                    'h' => 300, // Height
-                    'jpeg_quality'  => 100
-                ],
+                    'square' => [   // Define the prefix of your thumbnail
+                         'w' => 300, // Width
+                        'h' => 300, // Height
+                        'jpeg_quality'  => 100
+                ]
 
-            ],
-            'thumbnailMethod' => 'gd'   // Options are Imagick or Gd
-        ]
-    ]);
+            
+        ],
+        'thumbnailMethod' => 'gd'   // Options are Imagick or Gd
+    ]
+]);
+        $this->belongsToMany('Shoppings', [
+            'foreignKey' => 'product_id',
+            'targetForeignKey' => 'shopping_id',
+            'joinTable' => 'products_shoppings'
+        ]);
     }
 
     /**

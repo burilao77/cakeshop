@@ -13,6 +13,8 @@
             )
         ?></li>
         <li><?= $this->Html->link(__('List Products'), ['action' => 'index']) ?></li>
+        <li><?= $this->Html->link(__('List Shoppings'), ['controller' => 'Shoppings', 'action' => 'index']) ?></li>
+        <li><?= $this->Html->link(__('New Shopping'), ['controller' => 'Shoppings', 'action' => 'add']) ?></li>
     </ul>
 </nav>
 <div class="products form large-9 medium-8 columns content">
@@ -25,6 +27,7 @@
             echo $this->Form->control('description');
             echo $this->Form->control('photo');
             echo $this->Form->control('photo_dir');
+            echo $this->Form->control('shoppings._ids', ['options' => $shoppings]);
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>

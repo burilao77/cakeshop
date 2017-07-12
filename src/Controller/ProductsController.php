@@ -36,7 +36,7 @@ class ProductsController extends AppController
     public function view($id = null)
     {
         $product = $this->Products->get($id, [
-            'contain' => []
+            'contain' => ['Shoppings']
         ]);
 
         $this->set('product', $product);
@@ -60,7 +60,8 @@ class ProductsController extends AppController
             }
             $this->Flash->error(__('The product could not be saved. Please, try again.'));
         }
-        $this->set(compact('product'));
+        $shoppings = $this->Products->Shoppings->find('list', ['limit' => 200]);
+        $this->set(compact('product', 'shoppings'));
         $this->set('_serialize', ['product']);
     }
 
@@ -74,7 +75,7 @@ class ProductsController extends AppController
     public function edit($id = null)
     {
         $product = $this->Products->get($id, [
-            'contain' => []
+            'contain' => ['Shoppings']
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $product = $this->Products->patchEntity($product, $this->request->getData());
@@ -85,7 +86,8 @@ class ProductsController extends AppController
             }
             $this->Flash->error(__('The product could not be saved. Please, try again.'));
         }
-        $this->set(compact('product'));
+        $shoppings = $this->Products->Shoppings->find('list', ['limit' => 200]);
+        $this->set(compact('product', 'shoppings'));
         $this->set('_serialize', ['product']);
     }
 
@@ -107,5 +109,14 @@ class ProductsController extends AppController
         }
 
         return $this->redirect(['action' => 'index']);
+    }
+
+    public function updateScore()
+    {
+        if ($this->request->is('ajax')) 
+        {
+            $products = $this->Products->get($this->request->data('id'));
+            $products = $this->Products->patchEntity($products, $this->request->data);
+        }
     }
 }

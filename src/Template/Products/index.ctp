@@ -1,57 +1,43 @@
-<?php
-/**
-  * @var \App\View\AppView $this
-  * @var \App\Model\Entity\Product[]|\Cake\Collection\CollectionInterface $products
-  */
-?>
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('New Product'), ['action' => 'add']) ?></li>
-    </ul>
-</nav>
-<div class="products index large-9 medium-8 columns content">
-    <h3><?= __('Products') ?></h3>
-    <table cellpadding="0" cellspacing="0">
-        <thead>
-            <tr>
-                <th scope="col"><?= $this->Paginator->sort('id') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('name') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('price') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('photo') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('photo_dir') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('created') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('modified') ?></th>
-                <th scope="col" class="actions"><?= __('Actions') ?></th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($products as $product): ?>
-            <tr>
-                <td><?= $this->Number->format($product->id) ?></td>
-                <td><?= h($product->name) ?></td>
-                <td><?= $this->Number->format($product->price) ?></td>
-                <td><?= h($product->photo) ?></td>
-                <td><?= h($product->photo_dir) ?></td>
-                <td><?= h($product->created) ?></td>
-                <td><?= h($product->modified) ?></td>
-                <td class="actions">
-                    <?= $this->Html->link(__('View'), ['action' => 'view', $product->id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['action' => 'edit', $product->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $product->id], ['confirm' => __('Are you sure you want to delete # {0}?', $product->id)]) ?>
-                </td>
-            </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
-    <div class="paginator">
-        <ul class="pagination">
-            <?= $this->Paginator->first('<< ' . __('first')) ?>
-            <?= $this->Paginator->prev('< ' . __('previous')) ?>
-            <?= $this->Paginator->numbers() ?>
-            <?= $this->Paginator->next(__('next') . ' >') ?>
-            <?= $this->Paginator->last(__('last') . ' >>') ?>
-        </ul>
-        <p><?= $this->Paginator->counter(['format' => __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')]) ?></p>
+<h3>Productos en venta</h3>
+<div class="container">
+
+<div class="row">
+ <?php foreach ($products as $product): ?>
+  <div class="col-sm-6 col-md-4">
+    <div class="thumbnail">
+ 
+     <?= $this->Html->image('../files/products/photo/' . $product->photo_dir . '/square_' . $product->photo, ['alt' => $product->name, 'class' => 'img-responsive img-thumbnail center-block']) ?>
+          <p class="rat" data-id="<?= $product->id ?>">
+         <?= $this->Form->control('score', ['id' => 'input-id',  'class' => 'rating', 'name' => 'input-name', 'min' => 1, 'max' => 5, 'data-size' => 'lg', 'data-rtl' => true, 'label' => false]); ?>
+         </p>
+     
+      <div class="caption">
+        <h3><strong>Nombre: </strong><?= $product->name ?></h3>
+        <h3><strong>Precio: </strong><?= $this->Number->format($product->price) ?></h3>
+      </div>
     </div>
+  </div>
+  <?php endforeach; ?>
 </div>
+
+</div>
+<script>
+  $('#input-id').on('rating.change', function(event, value, caption) {
+        //alert(caption);
+    // var row = $(this).parents('p');
+     var id = $(".rat").attr('data-id');
+     var data = {
+       'id' : id,
+       'score': value
+     };
+     var url = basePath + 'products/updateScore';
+      console.log(data);
+     $.post(url, data, function(result) {
+            var obj = $.parseJSON(result);
+     }).fail(function () {
+            alert('Ocurrio un error :-(');
+        });
+
+
+});
+</script>

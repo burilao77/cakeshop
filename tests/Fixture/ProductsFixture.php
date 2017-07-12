@@ -48,8 +48,8 @@ class ProductsFixture extends TestFixture
             'description' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
             'photo' => 'Lorem ipsum dolor sit amet',
             'photo_dir' => 'Lorem ipsum dolor sit amet',
-            'created' => '2017-06-14 05:13:00',
-            'modified' => '2017-06-14 05:13:00'
+            'created' => '2017-06-28 23:32:14',
+            'modified' => '2017-06-28 23:32:14'
         ],
     ];
 }
